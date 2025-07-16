@@ -16,11 +16,11 @@ const score = ref(100);
 
 <template>
 	<header class="header">
-		<h1 v-bind="cards[0]" class="name">Запомни слово</h1>
+		<h1 class="name">Запомни слово</h1>
 		<Score :score="score"/>
 	</header>
 	<main class="main">
-		<Card number="01" word="word" />
+		<Card v-bind="cards[0]"/>
 		<Button
 			bg-color="#008bfe"
 			bg-hover-color="#006fcb"

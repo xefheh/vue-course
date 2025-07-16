@@ -1,8 +1,10 @@
 <script setup>
-	const { number, word, translation } = defineProps({
+	const { number, word, translation, state = "closed", status = "pending" } = defineProps({
 		number: String,
 		word: String,
-		translation: String
+		translation: String,
+		state: String,
+		status: String
 	})
 
 	const emit = defineEmits(['rotate', 'changeStatus']);
