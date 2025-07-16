@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 import ScoreIcon from './ScoreIcon.vue';
 
 const { score = 100 } = defineProps({

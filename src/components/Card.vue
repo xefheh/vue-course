@@ -1,4 +1,7 @@
 <script setup>
+import CancelIcon from './CancelIcon.vue';
+import OkIcon from './OkIcon.vue';
+
 	const { number, word, translation, state, status } = defineProps({
 		number: String,
 		word: String,
@@ -7,6 +10,18 @@
 		status: String
 	})
 
+	const isClosed = () => {
+		return state === 'closed';
+	}
+
+	const isPending = () => {
+		return status === 'pending';
+	}
+
+	const isSuccess = () => {
+		return status === "success";
+	}
+
 	const emit = defineEmits(['rotate', 'changeStatus']);
 </script>
 
@@ -14,8 +29,25 @@
 	<div class="card" @click="emit('rotate')">
 		<div class="innerCard">
 			<p class="number">{{ number }}</p>
-			<p class="word">{{ word }}</p>
-			<p class="rotate">Перевернуть</p>
+			<p v-if="isClosed()" class="word">{{ word }}</p>
+			<p v-else class="word">{{ translation }}</p>
+			<p v-if="isClosed()" class="rotate">Перевернуть</p>
+			<div class="iconContainer">
+				<OkIcon
+					v-if="isSuccess() && !isClosed()"
+					class="resultIcon"  
+					width="24" 
+					height="24" ></OkIcon>
+				<CancelIcon 
+					v-if="!isSuccess() && !isPending() && !isClosed()"
+					class="resultIcon"
+					width="24" 
+					height="24"></CancelIcon>
+			</div>
+			<div v-if="!isClosed() && isPending()" class="chooseMenu">
+				<CancelIcon width="24" height="24"></CancelIcon>
+				<OkIcon width="24" height="24"></OkIcon>
+			</div>
 		</div>
 	</div>
 </template>
@@ -72,4 +104,24 @@
 .word {
 	font-size: 18px;
 }
+
+.chooseMenu {
+	position: absolute;
+
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+	align-items: center;
+	padding: 0 4px;
+
+	transform: translateY(160px);
+	background-color: var(--color-card-bg);
+}
+
+.iconContainer {
+	position: absolute;
+	transform: translateY(-160px);
+	background-color: var(--color-card-bg);
+}
+
 </style>

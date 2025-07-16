@@ -10,6 +10,24 @@ const cards = ref([{
 	translation: "Слово",
 	status: "pending",
 	state: "closed"
+}, {
+	number: "02",
+	word: "Word",
+	translation: "Слово",
+	status: "fail",
+	state: "open"
+}, {
+	number: "03",
+	word: "Word",
+	translation: "Слово",
+	status: "success",
+	state: "open"
+}, {
+	number: "04",
+	word: "Word",
+	translation: "Слово",
+	status: "pending",
+	state: "open"
 }]);
 
 const score = ref(100);
@@ -22,7 +40,9 @@ const score = ref(100);
 		<Score :score="score"/>
 	</header>
 	<main class="main">
-		<Card v-bind="cards[0]"/>
+		<div class="cards">
+			<Card v-for="card in cards" v-bind="card" :key="card.number"/>
+		</div>
 		<Button
 			bg-color="#008bfe"
 			bg-hover-color="#006fcb"
@@ -46,5 +66,10 @@ const score = ref(100);
 	font-weight: 700;
 	margin-left: 0;
 	margin-right: auto;
+}
+
+.cards {
+	display: flex;
+	gap: 20px;
 }
 </style>
