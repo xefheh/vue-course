@@ -1,10 +1,16 @@
 <script setup>
 import Button from "./components/Button.vue"
+import Score from "./components/Score.vue"
+import Card from "./components/Card.vue"
 </script>
 
 <template>
+	<header class="header">
+		<h1 class="name">Запомни слово</h1>
+		<Score/>
+	</header>
 	<main class="main">
-
+		<Card number="01" word="word" />
 		<Button
 			bg-color="#008bfe"
 			bg-hover-color="#006fcb"
@@ -15,4 +21,18 @@ import Button from "./components/Button.vue"
 </template>
 
 <style scoped>
+.header {
+	display: flex;
+	padding: 8px 16px;
+	align-items: center;
+}
+
+.name {
+	text-transform: uppercase;
+	color: var(--color-font-header);
+	font-size: 16px;
+	font-weight: 700;
+	margin-left: 0;
+	margin-right: auto;
+}
 </style>
