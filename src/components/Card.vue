@@ -1,17 +1,26 @@
 <script setup>
-	const { number, word } = defineProps({
+	import { ref } from 'vue';
+
+	const { number, word, translation } = defineProps({
 		number: String,
-		word: String
+		word: String,
+		translation: String
 	})
 
 	const emit = defineEmits(['rotate', 'changeStatus']);
+
+	const refWord = ref(word);
+	const refTranlsation = ref(translation);
+	const refState = ref("closed");
+	const refStatus = ref("pending");
+
 </script>
 
 <template>
 	<div class="card" @click="emit('rotate')">
 		<div class="innerCard">
 			<p class="number">{{ number }}</p>
-			<p class="word">{{ word }}</p>
+			<p class="word">{{ refWord }}</p>
 			<p class="rotate">Перевернуть</p>
 		</div>
 	</div>
