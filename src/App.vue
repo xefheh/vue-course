@@ -1,18 +1,18 @@
 <script setup>
-import { ref } from 'vue';
-
-const date = ref(new Date())
-
-setInterval(() => {
-	date.value = new Date()
-}, 1000);
-
+import Button from "./components/Button.vue"
 </script>
 
 <template>
-{{ date }}
+	<main class="main">
+
+		<Button
+			bg-color="#008bfe"
+			bg-hover-color="#006fcb"
+			text-color="#ffffff">
+			Начать игру
+		</Button>
+	</main>
 </template>
 
 <style scoped>
-
 </style>

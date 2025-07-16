@@ -1,5 +1,25 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --color-primary: #000000;
+  --color-bg: #ffffff;
+  --color-primary-inverted: #ffffff;
+  --color-bg-card: #272e37;
+  --color-bg-main: #222831;
+  --color-button-primary: #008bfe;
+  --color-button-primary-inverted: #006fcb;
+
+  --font: "Roboto", sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--color-primary);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg);
+
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
 }
