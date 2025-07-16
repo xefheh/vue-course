@@ -1,5 +1,5 @@
 <script setup>
-	const { number, word, translation, state = "closed", status = "pending" } = defineProps({
+	const { number, word, translation, state, status } = defineProps({
 		number: String,
 		word: String,
 		translation: String,

@@ -7,7 +7,9 @@ import Card from "./components/Card.vue"
 const cards = ref([{
 	number: "01",
 	word: "Word",
-	translation: "Слово"
+	translation: "Слово",
+	status: "pending",
+	state: "closed"
 }]);
 
 const score = ref(100);
