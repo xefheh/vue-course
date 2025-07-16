@@ -1,9 +1,16 @@
 <script setup>
-const now = new Date()
+import { ref } from 'vue';
+
+const date = ref(new Date())
+
+setInterval(() => {
+	date.value = new Date()
+}, 1000);
+
 </script>
 
 <template>
-{{ now }}
+{{ date }}
 </template>
 
 <style scoped>
