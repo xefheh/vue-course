@@ -5,13 +5,11 @@ import ScoreIcon from './ScoreIcon.vue';
 const { score = 100 } = defineProps({
 	score: Number
  })
-
-const refScore = ref(score); 
 </script>
 
 <template>
 <div class="score">
-	{{ refScore }}
+	{{ score }}
 	<ScoreIcon/>
 </div>
 </template>

@@ -1,13 +1,23 @@
 <script setup>
+import { ref } from "vue";
 import Button from "./components/Button.vue"
 import Score from "./components/Score.vue"
 import Card from "./components/Card.vue"
+
+const cards = ref([{
+	number: "01",
+	word: "Word",
+	translation: "Слово"
+}]);
+
+const score = ref(100);
+
 </script>
 
 <template>
 	<header class="header">
-		<h1 class="name">Запомни слово</h1>
-		<Score/>
+		<h1 v-bind="cards[0]" class="name">Запомни слово</h1>
+		<Score :score="score"/>
 	</header>
 	<main class="main">
 		<Card number="01" word="word" />
