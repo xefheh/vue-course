@@ -58,7 +58,7 @@ const onChangeStatus = ({number, status}) => {
 	<main class="main">
 		<Error :error></Error>
 		<div class="cards">
-			<Card v-for="card in cards" v-bind="card" :key="card.number" @rotate="onRotate" @changeStatus="onChangeStatus"/>
+			<Card v-for="card in cards" v-bind="card" :key="card.number" @rotate="onRotate" @change-status="onChangeStatus"/>
 		</div>
 	</main>
 </template>
