@@ -1,8 +1,10 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, provide, computed } from "vue";
 import Score from "./components/Score.vue"
 import Card from "./components/Card.vue"
 import Error from "./components/Error.vue"
+import Button from "./components/Button.vue"
+import { scoreSymbol } from './constants';
 
 const API_URL = 'http://localhost:8080/api/random-words'
 
@@ -10,9 +12,21 @@ const cards = ref([]);
 
 const error = ref(null);
 
-const score = ref(100);
+const isStart = ref(false);
 
-onMounted(async () => {
+const score = ref(0);
+
+provide(scoreSymbol, score);
+
+const start = () => {
+	isStart.value = true;
+	cards.value = [];
+	score.value = 0;
+	fetchWords();
+
+}
+
+const fetchWords = async () => {
 	try {
 		const result = await fetch(API_URL);
 
@@ -30,6 +44,10 @@ onMounted(async () => {
 	} catch(err) {
 		error.value = err;
 	}
+}
+
+onMounted(async () => {
+	fetchWords();
 })
 
 const onRotate = (number) => {
@@ -46,7 +64,18 @@ const onChangeStatus = ({number, status}) => {
 			...card,
 			status: status
 		} : card);
+	
+	if(status === "success") {
+		score.value += 10;
+	} else {
+		score.value -= 4;
+	}
 }
+
+const isAllCardsNotPending = computed(() => {
+	return cards.value.length > 0 && cards.value.every(card => card.status !== 'pending');
+})
+
 
 </script>
 
@@ -56,8 +85,20 @@ const onChangeStatus = ({number, status}) => {
 		<Score :score="score"/>
 	</header>
 	<main class="main">
-		<Error :error></Error>
-		<div class="cards">
+		<Button 
+			v-if="!isStart"
+			bg-color="#008bfe"
+			bg-hover-color="#006fcb"
+			text-color="#ffffff"
+			@click="start">Начать игру</Button>
+		<Button 
+			v-else-if="isAllCardsNotPending"
+			bg-color="#008bfe"
+			bg-hover-color="#006fcb"
+			text-color="#ffffff"
+			@click="start">Начать заново</Button>
+		<div v-else class="cards">
+			<Error :error></Error>
 			<Card v-for="card in cards" v-bind="card" :key="card.number" @rotate="onRotate" @change-status="onChangeStatus"/>
 		</div>
 	</main>

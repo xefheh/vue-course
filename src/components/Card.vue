@@ -25,11 +25,9 @@ import OkIcon from './OkIcon.vue';
 	const emit = defineEmits(['rotate', 'changeStatus']);
 
 	const rotate = (number) => {
-
-		if(!isClosed()) {
-			return;
+		if(isClosed()) {
+			emit('rotate', number);
 		}
-		emit('rotate', number);
 	}
 
 	const setSuccess = () => {
