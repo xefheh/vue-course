@@ -1,5 +1,7 @@
 <script setup>
 const props = defineProps(['bgColor', 'bgHoverColor', 'textColor'])
+
+const emit = defineEmits(['click'])
 </script>
 
 <template>
@@ -9,7 +11,8 @@ const props = defineProps(['bgColor', 'bgHoverColor', 'textColor'])
 		'--color-button-bg': props.bgColor,
 		'--color-button-bg-hover': props.bgHoverColor,
 		'--color-button-text': props.textColor
-		}">
+		}"
+	@click="emit('click')">
 		<slot />
 	</button>
 </template>

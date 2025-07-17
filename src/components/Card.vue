@@ -1,6 +1,8 @@
 <script setup>
+import { scoreSymbol } from '../constants';
 import CancelIcon from './CancelIcon.vue';
 import OkIcon from './OkIcon.vue';
+import { inject } from 'vue';
 
 	const { number, word, translation, state, status } = defineProps({
 		number: Number,
@@ -9,6 +11,8 @@ import OkIcon from './OkIcon.vue';
 		state: String,
 		status: String
 	})
+
+	const score = inject(scoreSymbol);
 
 	const isClosed = () => {
 		return state === 'closed';
@@ -33,10 +37,12 @@ import OkIcon from './OkIcon.vue';
 	}
 
 	const setSuccess = () => {
+		score.value += 10;
 		emit('changeStatus', {number: number, status: 'success'});
 	}
 
 	const setFailure = () => {
+		score.value -= 4;
 		emit('changeStatus', {number: number, status: 'failure'});
 	}
 </script>
