@@ -19,7 +19,7 @@ const score = ref(0);
 provide(scoreSymbol, score);
 
 const start = () => {
-	cards.value = 0;
+	cards.value = [];
 	fetchWords();
 	score.value = 0;
 	isStart.value = true;
