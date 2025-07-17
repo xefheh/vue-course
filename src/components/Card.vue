@@ -37,12 +37,14 @@ import OkIcon from './OkIcon.vue';
 					v-if="isSuccess() && !isClosed()"
 					class="resultIcon"  
 					width="24" 
-					height="24" ></OkIcon>
+					height="24"
+					size="48"></OkIcon>
 				<CancelIcon 
 					v-if="!isSuccess() && !isPending() && !isClosed()"
 					class="resultIcon"
 					width="24" 
-					height="24"></CancelIcon>
+					height="24"
+					size="48"></CancelIcon>
 			</div>
 			<div v-if="!isClosed() && isPending()" class="chooseMenu">
 				<CancelIcon width="24" height="24"></CancelIcon>
@@ -120,7 +122,7 @@ import OkIcon from './OkIcon.vue';
 
 .iconContainer {
 	position: absolute;
-	transform: translateY(-160px);
+	transform: translateY(-157px);
 	background-color: var(--color-card-bg);
 }
 

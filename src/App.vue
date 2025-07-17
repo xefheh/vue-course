@@ -1,36 +1,29 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Button from "./components/Button.vue"
 import Score from "./components/Score.vue"
 import Card from "./components/Card.vue"
 
-const cards = ref([{
-	number: "01",
-	word: "Word",
-	translation: "Слово",
-	status: "pending",
-	state: "closed"
-}, {
-	number: "02",
-	word: "Word",
-	translation: "Слово",
-	status: "fail",
-	state: "open"
-}, {
-	number: "03",
-	word: "Word",
-	translation: "Слово",
-	status: "success",
-	state: "open"
-}, {
-	number: "04",
-	word: "Word",
-	translation: "Слово",
-	status: "pending",
-	state: "open"
-}]);
+const API_URL = 'http://localhost:8080/api/random-words'
+
+const cards = ref([]);
 
 const score = ref(100);
+
+onMounted(async () => {
+	const result = await fetch(API_URL);
+	const resultData = await result.json()
+
+	let id = 1;
+
+	cards.value = resultData.map(data => ({
+		number: id++,
+		word: data.word,
+		translation: data.translation,
+		status: "pending",
+		state: "closed"
+	}));
+})
 
 </script>
 
@@ -69,7 +62,16 @@ const score = ref(100);
 }
 
 .cards {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	gap: 10px;
+}
+
+.main {
 	display: flex;
-	gap: 20px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
 }
 </style>
