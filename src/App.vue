@@ -1,36 +1,52 @@
 <script setup>
-import { ref } from "vue";
-import Button from "./components/Button.vue"
+import { onMounted, ref } from "vue";
 import Score from "./components/Score.vue"
 import Card from "./components/Card.vue"
+import Error from "./components/Error.vue"
 
-const cards = ref([{
-	number: "01",
-	word: "Word",
-	translation: "Слово",
-	status: "pending",
-	state: "closed"
-}, {
-	number: "02",
-	word: "Word",
-	translation: "Слово",
-	status: "fail",
-	state: "open"
-}, {
-	number: "03",
-	word: "Word",
-	translation: "Слово",
-	status: "success",
-	state: "open"
-}, {
-	number: "04",
-	word: "Word",
-	translation: "Слово",
-	status: "pending",
-	state: "open"
-}]);
+const API_URL = 'http://localhost:8080/api/random-words'
+
+const cards = ref([]);
+
+const error = ref(null);
 
 const score = ref(100);
+
+onMounted(async () => {
+	try {
+		const result = await fetch(API_URL);
+
+		const resultData = await result.json()
+
+		let id = 1;
+
+		cards.value = resultData.map(data => ({
+			number: id++,
+			word: data.word,
+			translation: data.translation,
+			status: "pending",
+			state: "closed"
+		}));
+	} catch(err) {
+		error.value = err;
+	}
+})
+
+const onRotate = (number) => {
+	cards.value = 
+		cards.value.map(card => card.number === number ? {
+			...card,
+			state: "opened"
+		} : card);
+}
+
+const onChangeStatus = ({number, status}) => {
+	cards.value = 
+		cards.value.map(card => card.number === number ? {
+			...card,
+			status: status
+		} : card);
+}
 
 </script>
 
@@ -40,15 +56,10 @@ const score = ref(100);
 		<Score :score="score"/>
 	</header>
 	<main class="main">
+		<Error :error></Error>
 		<div class="cards">
-			<Card v-for="card in cards" v-bind="card" :key="card.number"/>
+			<Card v-for="card in cards" v-bind="card" :key="card.number" @rotate="onRotate" @change-status="onChangeStatus"/>
 		</div>
-		<Button
-			bg-color="#008bfe"
-			bg-hover-color="#006fcb"
-			text-color="#ffffff">
-			Начать игру
-		</Button>
 	</main>
 </template>
 
@@ -69,7 +80,16 @@ const score = ref(100);
 }
 
 .cards {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	gap: 10px;
+}
+
+.main {
 	display: flex;
-	gap: 20px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
 }
 </style>

@@ -3,7 +3,7 @@ import CancelIcon from './CancelIcon.vue';
 import OkIcon from './OkIcon.vue';
 
 	const { number, word, translation, state, status } = defineProps({
-		number: String,
+		number: Number,
 		word: String,
 		translation: String,
 		state: String,
@@ -23,10 +23,26 @@ import OkIcon from './OkIcon.vue';
 	}
 
 	const emit = defineEmits(['rotate', 'changeStatus']);
+
+	const rotate = (number) => {
+
+		if(!isClosed()) {
+			return;
+		}
+		emit('rotate', number);
+	}
+
+	const setSuccess = () => {
+		emit('changeStatus', {number: number, status: 'success'});
+	}
+
+	const setFailure = () => {
+		emit('changeStatus', {number: number, status: 'failure'});
+	}
 </script>
 
 <template>
-	<div class="card" @click="emit('rotate')">
+	<div :class="{pointer: isClosed()}" class="card" @click="rotate(number)">
 		<div class="innerCard">
 			<p class="number">{{ number }}</p>
 			<p v-if="isClosed()" class="word">{{ word }}</p>
@@ -36,17 +52,19 @@ import OkIcon from './OkIcon.vue';
 				<OkIcon
 					v-if="isSuccess() && !isClosed()"
 					class="resultIcon"  
-					width="24" 
-					height="24" ></OkIcon>
-				<CancelIcon 
+					size="48"></OkIcon>
+				<CancelIcon  
 					v-if="!isSuccess() && !isPending() && !isClosed()"
 					class="resultIcon"
-					width="24" 
-					height="24"></CancelIcon>
+					size="48"></CancelIcon>
 			</div>
 			<div v-if="!isClosed() && isPending()" class="chooseMenu">
-				<CancelIcon width="24" height="24"></CancelIcon>
-				<OkIcon width="24" height="24"></OkIcon>
+				<button class="iconButton" @click="setFailure">
+					<CancelIcon></CancelIcon>
+				</button>
+				<button class="iconButton" @click="setSuccess">
+					<OkIcon></OkIcon>
+				</button>
 			</div>
 		</div>
 	</div>
@@ -64,6 +82,7 @@ import OkIcon from './OkIcon.vue';
 	place-items: center;
 
 	box-shadow: 0px 0px 16px 0px #0000001A;
+	cursor: default;
 }
 
 .card:hover {
@@ -80,6 +99,10 @@ import OkIcon from './OkIcon.vue';
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.pointer {
+	cursor: pointer;
 }
 
 .rotate {
@@ -103,6 +126,7 @@ import OkIcon from './OkIcon.vue';
 
 .word {
 	font-size: 18px;
+	text-align: center;
 }
 
 .chooseMenu {
@@ -120,8 +144,14 @@ import OkIcon from './OkIcon.vue';
 
 .iconContainer {
 	position: absolute;
-	transform: translateY(-160px);
+	transform: translateY(-157px);
 	background-color: var(--color-card-bg);
+}
+
+.iconButton {
+	background: none;
+	border: none;
+	cursor: pointer;
 }
 
 </style>
