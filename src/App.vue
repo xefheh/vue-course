@@ -1,29 +1,52 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import Button from "./components/Button.vue"
 import Score from "./components/Score.vue"
 import Card from "./components/Card.vue"
+import Error from "./components/Error.vue"
 
 const API_URL = 'http://localhost:8080/api/random-words'
 
 const cards = ref([]);
 
+const error = ref(null);
+
 const score = ref(100);
 
 onMounted(async () => {
-	const result = await fetch(API_URL);
-	const resultData = await result.json()
+	try {
+		const result = await fetch(API_URL);
 
-	let id = 1;
+		const resultData = await result.json()
 
-	cards.value = resultData.map(data => ({
-		number: id++,
-		word: data.word,
-		translation: data.translation,
-		status: "pending",
-		state: "closed"
-	}));
+		let id = 1;
+
+		cards.value = resultData.map(data => ({
+			number: id++,
+			word: data.word,
+			translation: data.translation,
+			status: "pending",
+			state: "closed"
+		}));
+	} catch(err) {
+		error.value = err;
+	}
 })
+
+const onRotate = (number) => {
+	cards.value = 
+		cards.value.map(card => card.number === number ? {
+			...card,
+			state: "opened"
+		} : card);
+}
+
+const onChangeStatus = ({number, status}) => {
+	cards.value = 
+		cards.value.map(card => card.number === number ? {
+			...card,
+			status: status
+		} : card);
+}
 
 </script>
 
@@ -33,15 +56,10 @@ onMounted(async () => {
 		<Score :score="score"/>
 	</header>
 	<main class="main">
+		<Error :error></Error>
 		<div class="cards">
-			<Card v-for="card in cards" v-bind="card" :key="card.number"/>
+			<Card v-for="card in cards" v-bind="card" :key="card.number" @rotate="onRotate" @changeStatus="onChangeStatus"/>
 		</div>
-		<Button
-			bg-color="#008bfe"
-			bg-hover-color="#006fcb"
-			text-color="#ffffff">
-			Начать игру
-		</Button>
 	</main>
 </template>
 
