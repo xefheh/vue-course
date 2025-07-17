@@ -1,8 +1,6 @@
 <script setup>
-import { scoreSymbol } from '../constants';
 import CancelIcon from './CancelIcon.vue';
 import OkIcon from './OkIcon.vue';
-import { inject } from 'vue';
 
 	const { number, word, translation, state, status } = defineProps({
 		number: Number,
@@ -11,8 +9,6 @@ import { inject } from 'vue';
 		state: String,
 		status: String
 	})
-
-	const score = inject(scoreSymbol);
 
 	const isClosed = () => {
 		return state === 'closed';
@@ -29,16 +25,16 @@ import { inject } from 'vue';
 	const emit = defineEmits(['rotate', 'changeStatus']);
 
 	const rotate = (number) => {
-		emit('rotate', number);
+		if(isClosed()) {
+			emit('rotate', number);
+		}
 	}
 
 	const setSuccess = () => {
-		score.value += 10;
 		emit('changeStatus', {number: number, status: 'success'});
 	}
 
 	const setFailure = () => {
-		score.value -= 4;
 		emit('changeStatus', {number: number, status: 'failure'});
 	}
 </script>

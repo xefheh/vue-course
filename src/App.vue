@@ -19,10 +19,11 @@ const score = ref(0);
 provide(scoreSymbol, score);
 
 const start = () => {
-	cards.value = [];
-	fetchWords();
-	score.value = 0;
 	isStart.value = true;
+	cards.value = [];
+	score.value = 0;
+	fetchWords();
+
 }
 
 const fetchWords = async () => {
@@ -63,6 +64,12 @@ const onChangeStatus = ({number, status}) => {
 			...card,
 			status: status
 		} : card);
+	
+	if(status === "success") {
+		score.value += 10;
+	} else {
+		score.value -= 4;
+	}
 }
 
 const isAllCardsNotPending = computed(() => {
